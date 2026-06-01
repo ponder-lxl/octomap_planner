@@ -16,7 +16,7 @@
 
 ## 演示视频
 
-- Bilibili：[【开源】基于ROS2的3D避障导航]()
+- Bilibili：[【开源】基于octomap的三维静态避障导航](https://www.bilibili.com/video/BV1UmVo6CESA?vd_source=a3863c674042161b897989c0ad2a0091)
 
 
 ## 编译
