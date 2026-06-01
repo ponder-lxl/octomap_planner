@@ -5,6 +5,7 @@
   <version>0.0.0</version>
   <description>3D path planner package on OctoMap using ROS 2.</description>
   <maintainer email="zhangwanjie@126.com">robot</maintainer>
+  <maintainer email="xinlei__liu@163.com">robot</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

@@ -5,6 +5,7 @@
   <version>0.0.0</version>
   <description>Combined OctoMap tools, map package manager, import GUIs, and navigation map viewers.</description>
   <maintainer email="zhangwanjie@126.com">robot</maintainer>
+  <maintainer email="xinlei__liu@163.com">robot</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
