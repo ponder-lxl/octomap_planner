@@ -1,0 +1,64 @@
+# PCD -> OctoMap -> 在线重算规划图层 -> 保存地图包
+# 用法：编辑 pcd_file / package_output_dir 等，然后
+#   ros2 launch octomap_3d build_map_package_from_pcd.launch.py
+# 或指定配置：
+#   ros2 launch octomap_3d build_map_package_from_pcd.launch.py config_file:=/path/to/this.yaml
+#
+# 流程：pcd_to_octomap 读 PCD 发布 /octomap -> jie_path_node 重算三层 ->
+#       终端出现 "Navigation layers generation COMPLETE" 后，用地图保存 GUI 或服务写入 package_output_dir
+
+# --- 输入 / 输出（必填项）---
+pcd_file: "/home/rx01109/loong_3d/src/fast_lio/FAST_LIO/PCD/fast_lio_map.pcd"
+package_output_dir: "/home/rx01109/loong_3d/src/nav_3d/octomap_3d/worlds/pcd_export"
+map_id: "pcd_export_map"
+frame_id: "map"
+use_sim_time: false
+
+# --- launch 行为 ---
+launch:
+  launch_rviz: true
+  launch_map_save_gui: true
+  launch_occupied_markers: true
+  rviz_config: ""  # 空则使用 rviz/build_map_package_from_pcd.rviz（Volatile QoS，避免旧地图包残留）
+
+# --- pcd_to_octomap_node ---
+pcd_to_octomap:
+  octomap_topic: "/octomap"
+  pcd_file_cmd_topic: "/pcd_file_cmd"
+  map_cloud_topic: ""  # 非空则订阅 PointCloud2，忽略 pcd_file
+  resolution: 0.2
+  voxel_downsample_m: 0.1
+  min_points_per_voxel: 2
+  min_cluster_voxels: 2
+
+# --- jie_path_node（在线重算 preblocked / traversable / risk）---
+jie_path_node:
+  octomap_topic: "/octomap"
+  preblocked_marker_topic: "/preblocked_cells_markers"
+  traversable_marker_topic: "/traversable_cells_markers"
+  risk_cost_topic: "/risk_cost_cells"
+  recompute_layers_on_octomap: true
+  # 在线重算时用 Volatile，避免 RViz/ROS 缓存上一张地图包的 transient_local 图层
+  layer_markers_transient_local: false
+  robot_radius: 0.22
+  max_iterations: 500000
+  snap_search_radius_cells: 12
+  require_ground_support: true
+  strict_direct_ground_support: false
+  ground_support_xy_radius_cells: 1
+  ground_support_depth_cells: 1
+  lowest_traversable_only: false
+  enable_preblocked_costmap: true
+  preblocked_costmap_radius_cells: 3
+  preblocked_costmap_weight: 2.5
+
+# --- map_package_manager（仅缓存图层用于保存，不向规划话题重复发布）---
+map_package_manager:
+  publish_navigation_layers: false
+  layer_qos_transient_local: false
+  save_skip_export_if_ready: true
+  save_recompute_layers: false
+  save_export_timeout_sec: 7200.0
+  save_layer_sync_timeout_sec: 7200.0
+  save_meta_timeout_sec: 300.0
+  planner_map_id: "pcd_export_map"

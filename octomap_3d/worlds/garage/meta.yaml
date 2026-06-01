@@ -1,0 +1,32 @@
+map_id: world_jie_path_map
+frame_id: map
+resolution: 0.2
+octomap_file: octomap_msg.npz
+layers_file: layers.npz
+source_world_file: ''
+snapshot_stamp:
+  sec: 1779667899
+  nanosec: 933098867
+bounds:
+  min:
+  - -40.199998474121095
+  - -25.6
+  - -0.20000000149011612
+  max:
+  - 75.0000015258789
+  - 75.19999847412109
+  - 20.999999618530275
+planner:
+  robot_radius: 0.12
+  snap_search_radius_cells: 12
+  require_ground_support: true
+  strict_direct_ground_support: true
+  ground_support_xy_radius_cells: 1
+  ground_support_depth_cells: 2
+  enable_preblocked_costmap: true
+  preblocked_costmap_radius_cells: 3
+  preblocked_costmap_weight: 1.5
+layers:
+  preblocked_count: 705714
+  traversable_count: 876886
+  risk_cost_count: 180303
